@@ -1,0 +1,177 @@
+{
+	"info": {
+		"_postman_id": "c7993419-8484-416a-be42-bcef3ded3636",
+		"name": "Week 1 - Assignment",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26039495"
+	},
+	"item": [
+		{
+			"name": "All Incidents using QP",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://dev120608.service-now.com/api/now/table/incident?sysparm_limit=5&sysparm_fields=number,sys_id,caller_id,short_description,sys_updated_by",
+					"protocol": "https",
+					"host": [
+						"dev120608",
+						"service-now",
+						"com"
+					],
+					"path": [
+						"api",
+						"now",
+						"table",
+						"incident"
+					],
+					"query": [
+						{
+							"key": "sysparm_limit",
+							"value": "5"
+						},
+						{
+							"key": "sysparm_fields",
+							"value": "number,sys_id,caller_id,short_description,sys_updated_by"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Change Request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response time is less than 300ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(300);",
+							"});",
+							"",
+							"var resp = pm.response.json();",
+							"var num = resp.result.number",
+							"console.log(num);",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"requested_by\": \"System Administrator\",\n    \"short_description\": \"Postman Short Description\",\n    \"description\": \"Postman Description\",\n    \"justification\": \"Postman Test DC\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://dev120608.service-now.com/api/now/table/change_request",
+					"protocol": "https",
+					"host": [
+						"dev120608",
+						"service-now",
+						"com"
+					],
+					"path": [
+						"api",
+						"now",
+						"table",
+						"change_request"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Change request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Body matches string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"DC\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"short_description\": \"Updated SD via Postman by DC\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://dev120608.service-now.com/api/now/table/change_request/1e80921d471121102ec60d45d36d434f",
+					"protocol": "https",
+					"host": [
+						"dev120608",
+						"service-now",
+						"com"
+					],
+					"path": [
+						"api",
+						"now",
+						"table",
+						"change_request",
+						"1e80921d471121102ec60d45d36d434f"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Change Request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Delete Change Request Status code is 204\", function () {",
+							"    pm.response.to.have.status(204);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://dev120608.service-now.com/api/now/table/change_request/1e80921d471121102ec60d45d36d434f",
+					"protocol": "https",
+					"host": [
+						"dev120608",
+						"service-now",
+						"com"
+					],
+					"path": [
+						"api",
+						"now",
+						"table",
+						"change_request",
+						"1e80921d471121102ec60d45d36d434f"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
